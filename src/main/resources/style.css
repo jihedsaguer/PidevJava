@@ -4,3 +4,45 @@
     /* Scale background image to cover the entire window */
     -fx-background-size: cover;
 }
+
+
+.label {
+    -fx-font-family: "Segoe UI", sans-serif; /* Set font family */
+    -fx-font-size: 18px; /* Font size */
+    -fx-text-fill: #333; /* Text color */
+}
+
+.text-field {
+    -fx-background-color: #ffffff; /* White background for text fields */
+    -fx-border-color: #ccc; /* Light gray border */
+    -fx-border-width: 1px; /* Border width */
+    -fx-border-radius: 5px; /* Border radius */
+    -fx-pref-width: 300px; /* Preferred width */
+    -fx-pref-height: 40px; /* Preferred height */
+    -fx-font-size: 14px; /* Font size */
+    -fx-text-fill: #555; /* Text color */
+}
+
+.button {
+    -fx-background-color: #007bff; /* Blue button background */
+    -fx-text-fill: #fff; /* White text color */
+    -fx-font-size: 14px; /* Font size */
+    -fx-pref-width: 150px; /* Preferred width */
+    -fx-pref-height: 40px; /* Preferred height */
+    -fx-background-radius: 5px; /* Button border radius */
+    -fx-cursor: pointer; /* Change cursor on hover */
+}
+
+.hyperlink {
+    -fx-text-fill: #007bff; /* Blue hyperlink text color */
+    -fx-font-size: 14px; /* Font size */
+}
+
+.pane {
+    -fx-background-color: #fff; /* White background for panes */
+    -fx-padding: 20px; /* Padding */
+    -fx-border-radius: 10px; /* Border radius */
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.2) , 10,0,0,1 ); /* Add shadow effect */
+}
+
+/* Adjust layout positions as needed */

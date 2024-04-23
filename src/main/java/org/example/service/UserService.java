@@ -69,10 +69,12 @@ public class UserService implements ICrud<User>{
         }
     }
 
+
     @Override
     public void supprimerEntite(User p) {
         String requet = "DELETE FROM user WHERE id =?";
         try {
+
             PreparedStatement pst = cnx2.prepareStatement(requet);
             pst.setInt(1, p.getId());  // Assuming getQuizId() returns the Quiz ID
             int rowsAffected = pst.executeUpdate();
@@ -84,6 +86,7 @@ public class UserService implements ICrud<User>{
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+
         }
     }
 
