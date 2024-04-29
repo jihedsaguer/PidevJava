@@ -107,6 +107,7 @@ public class User {
         return "user{" +
                 "name='" + name + '\'' +
                 ", prenom='" + prenom + '\'' +
+                ", ban"+ is_banned +
                 '}';
     }
 }

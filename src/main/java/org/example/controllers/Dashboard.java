@@ -1,6 +1,9 @@
 package org.example.controllers;
 
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import java.net.URL;
@@ -25,6 +28,7 @@ import java.sql.SQLException;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
@@ -53,6 +57,15 @@ public class Dashboard {
     void refresh(ActionEvent event) {
         grid.getChildren().clear();
         displayg();
+    }@FXML
+    void logout(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Dashboard.fxml"));
+        Parent adminRoot = loader.load();
+
+        Scene adminScene = new Scene(adminRoot);
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setScene(adminScene);
+        window.show();
     }
     private void displayg() {
         ///////////////////////////////////////////////////////////////

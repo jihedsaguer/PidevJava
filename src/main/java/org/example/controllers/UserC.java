@@ -1,12 +1,13 @@
 package org.example.controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import org.example.entities.User;
+import org.example.service.UserService;
 
 public class UserC {
 
-    private User user= new User();
     @FXML
     private Label ban;
 
@@ -18,6 +19,14 @@ public class UserC {
 
     @FXML
     private Label tel;
+
+    private User user;
+    @FXML
+    void ban(ActionEvent event) {
+        us.ban(user.getId());
+    }
+
+    UserService us= new UserService();
     public void setData(User q) {
         this.user = q;
         name.setText("Name : "+q.getName()+" "+q.getPrenom());
@@ -31,4 +40,5 @@ public class UserC {
         }
 
     }
+
 }

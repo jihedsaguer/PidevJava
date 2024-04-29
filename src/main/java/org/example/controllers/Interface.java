@@ -2,14 +2,23 @@ package org.example.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.stage.Stage;
+import org.example.service.UserService;
+
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import org.example.entities.User;
 import org.example.service.UserService;
 import org.example.tools.DBconnexion;
+
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -43,6 +52,9 @@ public class Interface {
 
     @FXML
     private TextField tf_email;
+
+    @FXML
+    private TextField tf_pw;
 
     @FXML
     private TextField tf_email1;
@@ -233,12 +245,10 @@ public class Interface {
 
     @FXML
     void login(ActionEvent event) {
-        pn_home.toFront();
-        pn_index.toFront();
-        id.setText(tf_log.getText());
-        ResultSet resultSet = us.SelectionnerSingle(Integer.parseInt(id.getText()));
+
+        ResultSet resultSet = us.log(tf_log.getText(),tf_pw.getText());
         try {
-            while (resultSet.next()) {
+            if (resultSet.next()) {
                 tmpp = new User(
                         resultSet.getInt("id"),
                         resultSet.getString("email"),
@@ -249,15 +259,45 @@ public class Interface {
                         resultSet.getInt("tel"),
                         resultSet.getInt("is_banned")
                 );
+                id.setText(String.valueOf(tmpp.getId()));
+                tf_email1.setText(tmpp.getEmail());
+                tf_pass1.setText(tmpp.getPassword());
+                tf_fn1.setText(tmpp.getPrenom());
+                tf_ln1.setText(tmpp.getName());
+                if (tmpp.getIs_banned()==1)
+                {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("User banned");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Usr banned !");
+                    alert.showAndWait();
+                }else{
+                    if (tmpp.getRoles().equals("[\"ROLE_ADMIN\"]")) {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Dashboard.fxml"));
+                        Parent adminRoot = loader.load();
+
+                        Scene adminScene = new Scene(adminRoot);
+                        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                        window.setScene(adminScene);
+                        window.show();
+                    }else{
+                        pn_home.toFront();
+                        pn_index.toFront();
+                    }
+                }}else
+            {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Information incorrect");
+                alert.setHeaderText(null);
+                alert.setContentText("email ou mot de passe incorrect !");
+                alert.showAndWait();
             }
-            tf_email1.setText(tmpp.getEmail());
-            tf_pass1.setText(tmpp.getPassword());
-            tf_fn1.setText(tmpp.getPrenom());
-            tf_ln1.setText(tmpp.getName());
-            tf_num1.setText(String.valueOf(tmpp.getTel()));
-        } catch (SQLException ex) {
-            Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+
 
     }
 

@@ -99,6 +99,36 @@ public class UserService implements ICrud<User>{
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
-        return rs;    }
+        return rs;
+    }
+
+    public ResultSet log(String email , String pw ) {
+        ResultSet rs = null;
+        try {
+            String req = "SELECT * FROM user WHERE email = '"+email+"' AND password = '"+pw+"'";
+            PreparedStatement st = cnx2.prepareStatement(req);
+            rs = st.executeQuery(req);
+            return rs;
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return rs;
+    }
+
+    public void ban(int id) {
+        String requet = "UPDATE `user` SET `is_banned`=1 WHERE `id` =?";
+        try {
+            PreparedStatement st = cnx2.prepareStatement(requet);
+            st.setInt(1, id);
+            int rowsAffected = st.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Banned ");
+            } else {
+                System.out.println("Aucune modification effectuée. Vérifiez l'ID.");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }
 
