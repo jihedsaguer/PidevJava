@@ -6,13 +6,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
+import javafx.scene.control.*;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.example.service.UserService;
-
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.type.PhoneNumber;
 import javafx.scene.layout.Pane;
 import org.example.entities.User;
 import org.example.service.UserService;
@@ -30,6 +30,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Interface {
+
+    @FXML
+    private Pagination pagination;
 
     @FXML
     private Label id;
@@ -243,6 +246,22 @@ public class Interface {
         pn_signin.toFront();
     }
 
+
+    @FXML
+    public void pwd(ActionEvent event) throws SQLException, IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/forgot.fxml"));
+        Parent signInRoot = loader.load();
+        Scene signInScene = new Scene(signInRoot);
+
+        // Create a new stage for the forget password window
+        Stage forgetPwdStage = new Stage();
+        forgetPwdStage.initModality(Modality.APPLICATION_MODAL); // Set modality to APPLICATION_MODAL
+        forgetPwdStage.setScene(signInScene);
+        forgetPwdStage.showAndWait();
+
+    }
+
+
     @FXML
     void login(ActionEvent event) {
 
@@ -308,5 +327,22 @@ public class Interface {
         pn_update.toBack();
     }
 
+    @FXML
+    private void forgotPassword() throws IOException {
+        // Implement the action to perform when "Forgot Password" button is clicked
+        // For example, display a dialog or navigate to a password recovery page
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/forgot.fxml"));
+        Parent signInRoot = loader.load();
+        Scene signInScene = new Scene(signInRoot);
 
+        // Create a new stage for the forget password window
+        Stage forgetPwdStage = new Stage();
+        forgetPwdStage.initModality(Modality.APPLICATION_MODAL); // Set modality to APPLICATION_MODAL
+        forgetPwdStage.setScene(signInScene);
+        forgetPwdStage.showAndWait();
+        System.out.println("Forgot Password button clicked!");
+    }
 }
+
+
+

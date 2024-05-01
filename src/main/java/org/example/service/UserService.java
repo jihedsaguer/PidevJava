@@ -5,6 +5,8 @@ import org.example.tools.DBconnexion;
 
 import java.sql.*;
 import java.util.List;
+import org.mindrot.jbcrypt.BCrypt;
+
 
 public class UserService implements ICrud<User>{
     Connection cnx2;
@@ -40,6 +42,11 @@ public class UserService implements ICrud<User>{
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
+    }
+    private String hashPassword(String plainPassword) {
+        // Generate a salt and hash the password with it using bcrypt
+        return BCrypt.hashpw(plainPassword, BCrypt.gensalt());
     }
 
     @Override
@@ -141,5 +148,23 @@ public class UserService implements ICrud<User>{
             System.out.println(e.getMessage());
         }
     }
+    public ResultSet searchUsers(String searchText, int offset, int limit) {
+        String query = "SELECT * FROM user WHERE name LIKE ? OR email LIKE ? LIMIT ? OFFSET ?";
+        try {
+            PreparedStatement stmt = cnx2.prepareStatement(query);
+            stmt.setString(1, "%" + searchText + "%");
+            stmt.setString(2, "%" + searchText + "%");
+            stmt.setInt(3, limit);
+            stmt.setInt(4, offset);
+            return stmt.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+
+
 }
 

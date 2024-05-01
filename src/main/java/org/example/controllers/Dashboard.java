@@ -60,7 +60,8 @@ public class Dashboard {
 
     @FXML
     void logout(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Dashboard.fxml"));
+        System.out.println("logging out");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interface.fxml"));
         Parent adminRoot = loader.load();
 
         Scene adminScene = new Scene(adminRoot);
@@ -137,6 +138,7 @@ public class Dashboard {
 
 
     }
+
 
 
 }
