@@ -104,10 +104,16 @@ public class User {
 
     @Override
     public String toString() {
-        return "user{" +
-                "name='" + name + '\'' +
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", roles='" + roles + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
                 ", prenom='" + prenom + '\'' +
-                ", ban"+ is_banned +
+                ", tel=" + tel +
+                ", is_banned=" + is_banned +
                 '}';
     }
+
 }

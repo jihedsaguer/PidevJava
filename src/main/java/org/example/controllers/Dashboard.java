@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import java.net.URL;
@@ -14,11 +15,6 @@ import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -26,38 +22,43 @@ import javafx.collections.FXCollections;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javafx.collections.ObservableList;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import java.io.IOException;
+import java.util.stream.Collectors;
+
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import org.example.entities.User;
 import org.example.service.UserService;
 
 public class Dashboard {
-
+    @FXML
+    private TextField searchField;
     @FXML
     private GridPane grid;
+    @FXML
+    private Pagination pagination;
 
     UserService us = new UserService();
+
     @FXML
     public void initialize() {
         grid.getChildren().clear();
-        displayg();
+        displayg("");
     }
-
 
     @FXML
     void refresh(ActionEvent event) {
         grid.getChildren().clear();
-        displayg();
-    }@FXML
+        displayg("");
+    }
+
+    @FXML
     void logout(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Dashboard.fxml"));
         Parent adminRoot = loader.load();
@@ -67,10 +68,16 @@ public class Dashboard {
         window.setScene(adminScene);
         window.show();
     }
-    private void displayg() {
+
+    private void displayg(String searchText) {
         ///////////////////////////////////////////////////////////////
         ObservableList<User> l2 = FXCollections.observableArrayList();
-        ResultSet resultSet2 = us.Getall();
+        ResultSet resultSet2;
+        if (searchText.isEmpty()) {
+            resultSet2 = us.Getall(); // Retrieve all users if search text is empty
+        } else {
+            resultSet2 = us.searchUsers(searchText); // Retrieve filtered users based on search text
+        }
         l2.clear();
         User pppp = new User();
         l2.add(pppp);
@@ -118,4 +125,19 @@ public class Dashboard {
         }
     }
 
+    @FXML
+    private void search() {
+        String searchText = searchField.getText().toLowerCase(); // Convert to lowercase for case-insensitive search
+
+        // Clear the grid before populating with search results
+        grid.getChildren().clear();
+
+        // Call displayg() with the search text
+        displayg(searchText);
+
+
+    }
+
+
 }
+

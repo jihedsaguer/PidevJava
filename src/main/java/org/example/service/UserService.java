@@ -89,7 +89,18 @@ public class UserService implements ICrud<User>{
 
         }
     }
-
+    public ResultSet searchUsers(String searchText) {
+        String query = "SELECT * FROM user WHERE name LIKE ? OR email LIKE ?";
+        try {
+            PreparedStatement stmt = cnx2.prepareStatement(query);
+            stmt.setString(1, "%" + searchText + "%");
+            stmt.setString(2, "%" + searchText + "%");
+            return stmt.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     public ResultSet Getall() {
         ResultSet rs = null;
         try {
