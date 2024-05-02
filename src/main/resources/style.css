@@ -36,87 +36,15 @@
 
 /* Adjust layout positions as needed */
 /* Style for the "Create new Account" section */
-#pn_signup {
-    -fx-background-color: #f0f0f0; /* Change background color */
-}
 
-/* Style for the "My Personal Information" section */
-#pn_update {
-    -fx-background-color: #f0f0f0; /* Change background color */
-}
 
 /* Align text fields */
 .text-field {
     -fx-pref-width: 250px; /* Set preferred width for text fields */
     -fx-padding: 8px; /* Add padding */
 }
-
-/* Align buttons */
-.button {
-    -fx-pref-width: 100px; /* Set preferred width for buttons */
-    -fx-padding: 8px; /* Add padding */
+#captchaC
+{
+    -fx-background-color: white;
 }
 
-/* Align hyperlinks */
-.hyperlink {
-    -fx-padding: 8px; /* Add padding */
-}
-
-/* Style for the "Login" section */
-#pn_signin {
-    -fx-background-color: #f0f0f0; /* Change background color */
-}
-
-/* Align login fields */
-#tf_log,
-#tf_pw {
-    -fx-pref-width: 300px; /* Set preferred width for text fields */
-    -fx-padding: 8px; /* Add padding */
-}
-
-/* Align login button */
-#btnLogin {
-    -fx-pref-width: 150px; /* Set preferred width for button */
-    -fx-padding: 8px; /* Add padding */
-}
-
-/* Align forgot password button */
-#btnForgotPassword {
-    -fx-pref-width: 200px; /* Set preferred width for button */
-    -fx-padding: 8px; /* Add padding */
-}
-/* Style for the "Create new Account" section */
-#pn_signup {
-    -fx-background-color: #f9f9f9; /* Change background color to light gray */
-    -fx-padding: 20px; /* Add padding */
-}
-
-/* Align text fields */
-#tf_fn,
-#tf_ln,
-#tf_num,
-#tf_email,
-#tf_pass {
-    -fx-pref-width: 300px; /* Set preferred width for text fields */
-    -fx-pref-height: 40px; /* Set preferred height for text fields */
-    -fx-font-size: 14px; /* Set font size */
-    -fx-padding: 8px; /* Add padding */
-}
-
-/* Style for the "Signup" button */
-#btnSignup {
-    -fx-pref-width: 150px; /* Set preferred width for button */
-    -fx-pref-height: 40px; /* Set preferred height for button */
-    -fx-font-size: 14px; /* Set font size */
-    -fx-background-color: #007bff; /* Set background color to blue */
-    -fx-text-fill: white; /* Set text color to white */
-    -fx-font-weight: bold; /* Set font weight to bold */
-    -fx-border-radius: 5px; /* Add border radius */
-    -fx-padding: 8px; /* Add padding */
-}
-
-/* Style for the "Already have account signin" hyperlink */
-#linkSignin {
-    -fx-font-size: 14px; /* Set font size */
-    -fx-padding: 8px; /* Add padding */
-}

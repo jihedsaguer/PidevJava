@@ -19,11 +19,14 @@ import org.example.service.UserService;
 import org.example.tools.DBconnexion;
 
 import java.io.IOException;
+import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Random;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -40,6 +43,16 @@ public class Interface {
     private TextField tf_log;
     @FXML
     private Pane pn_home;
+
+
+    @FXML
+    private TextField captcha;
+
+    @FXML
+    private TextField captchaC;
+
+    @FXML
+    private TextField captchaE;
 
     @FXML
     private Pane pn_index;
@@ -140,6 +153,7 @@ public class Interface {
         tf_email.clear();
         tf_pass.clear();
         pn_signin.toFront();
+
     }
 
     @FXML
@@ -313,8 +327,7 @@ public class Interface {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (IOException e) {            throw new RuntimeException(e);
         }
 
 
@@ -342,7 +355,26 @@ public class Interface {
         forgetPwdStage.showAndWait();
         System.out.println("Forgot Password button clicked!");
     }
-}
+
+    private void generateCaptcha() {
+        // Generate a random sequence of letters for the CAPTCHA
+        Random random = new Random();
+        StringBuilder captcha = new StringBuilder();
+        for (int i = 0; i < 6; i++) { // Generate a 6-letter CAPTCHA
+            char randomChar = (char) (random.nextInt(26) + 'A'); // Generate random uppercase letters
+            captcha.append(randomChar);
+        }
+        String captchaText = captcha.toString();
+        captchaC.setText(captchaText);
+    }
+
+    @FXML
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        generateCaptcha();
+    }
+    }
+
+
 
 
 
