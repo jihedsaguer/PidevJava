@@ -53,6 +53,18 @@ public class Dashboard {
     EventService es = new EventService();
 
     @FXML
+    void titre(ActionEvent event) {
+        grid.getChildren().clear();
+        triet();
+    }
+
+    @FXML
+    void date(ActionEvent event) {
+        grid.getChildren().clear();
+        tried();
+    }
+
+    @FXML
     void addevent(ActionEvent event) {
         // Get the current date
         LocalDate currentDate = LocalDate.now();
@@ -109,6 +121,108 @@ public class Dashboard {
         ///////////////////////////////////////////////////////////////
         ObservableList<Event> l2 = FXCollections.observableArrayList();
         ResultSet resultSet2 = es.Getall();
+        l2.clear();
+        Event pppp = new Event();
+        l2.add(pppp);
+        int column = 0;
+        int row = 2;
+        if (l2.size() > 0) {
+
+        }
+        try {
+            while (resultSet2.next()) {
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("/Event.fxml"));
+                try {
+                    AnchorPane anchorPane = fxmlLoader.load();
+                    EventC itemController = fxmlLoader.getController();
+                    int id=resultSet2.getInt("id");
+                    String nom =resultSet2.getString("nom");
+                    String decsription=resultSet2.getString("description");
+                    String lieu=resultSet2.getString("lieu");
+                    String date=resultSet2.getString("date");
+                    double lat=resultSet2.getDouble("lat");
+                    double lon=resultSet2.getDouble("long");
+                    Event ppppp = new Event(id,nom,decsription,"",date,lieu,lat,lon);
+                    itemController.setData(ppppp);
+                    if (column == 1) {
+                        column = 0;
+                        row++;
+                    }
+                    grid.add(anchorPane, column++, row); //(child,column,row)
+                    //set grid width
+                    grid.setMinWidth(Region.USE_COMPUTED_SIZE);
+                    grid.setPrefWidth(Region.USE_COMPUTED_SIZE);
+                    grid.setMaxWidth(Region.USE_PREF_SIZE);
+                    //set grid height
+                    grid.setMinHeight(Region.USE_COMPUTED_SIZE);
+                    grid.setPrefHeight(Region.USE_COMPUTED_SIZE);
+                    grid.setMaxHeight(Region.USE_PREF_SIZE);
+                    GridPane.setMargin(anchorPane, new Insets(10));
+                } catch (IOException ex) {
+                    Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void triet() {
+        ///////////////////////////////////////////////////////////////
+        ObservableList<Event> l2 = FXCollections.observableArrayList();
+        ResultSet resultSet2 = es.Sortt();
+        l2.clear();
+        Event pppp = new Event();
+        l2.add(pppp);
+        int column = 0;
+        int row = 2;
+        if (l2.size() > 0) {
+
+        }
+        try {
+            while (resultSet2.next()) {
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("/Event.fxml"));
+                try {
+                    AnchorPane anchorPane = fxmlLoader.load();
+                    EventC itemController = fxmlLoader.getController();
+                    int id=resultSet2.getInt("id");
+                    String nom =resultSet2.getString("nom");
+                    String decsription=resultSet2.getString("description");
+                    String lieu=resultSet2.getString("lieu");
+                    String date=resultSet2.getString("date");
+                    double lat=resultSet2.getDouble("lat");
+                    double lon=resultSet2.getDouble("long");
+                    Event ppppp = new Event(id,nom,decsription,"",date,lieu,lat,lon);
+                    itemController.setData(ppppp);
+                    if (column == 1) {
+                        column = 0;
+                        row++;
+                    }
+                    grid.add(anchorPane, column++, row); //(child,column,row)
+                    //set grid width
+                    grid.setMinWidth(Region.USE_COMPUTED_SIZE);
+                    grid.setPrefWidth(Region.USE_COMPUTED_SIZE);
+                    grid.setMaxWidth(Region.USE_PREF_SIZE);
+                    //set grid height
+                    grid.setMinHeight(Region.USE_COMPUTED_SIZE);
+                    grid.setPrefHeight(Region.USE_COMPUTED_SIZE);
+                    grid.setMaxHeight(Region.USE_PREF_SIZE);
+                    GridPane.setMargin(anchorPane, new Insets(10));
+                } catch (IOException ex) {
+                    Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void tried() {
+        ///////////////////////////////////////////////////////////////
+        ObservableList<Event> l2 = FXCollections.observableArrayList();
+        ResultSet resultSet2 = es.Sortd();
         l2.clear();
         Event pppp = new Event();
         l2.add(pppp);

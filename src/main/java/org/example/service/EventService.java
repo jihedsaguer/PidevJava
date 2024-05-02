@@ -100,6 +100,40 @@ public class EventService implements ICrud<Event>{
         }
         return rs;    }
 
+    public ResultSet Sortt() {
+        ResultSet rs = null;
+        try {
+            String req = "SELECT * FROM `event` ORDER BY nom";
+            PreparedStatement st = cnx2.prepareStatement(req);
+            rs = st.executeQuery(req);
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return rs;    }
+
+    public ResultSet Sortd() {
+        ResultSet rs = null;
+        try {
+            String req = "SELECT * FROM `event` ORDER BY date";
+            PreparedStatement st = cnx2.prepareStatement(req);
+            rs = st.executeQuery(req);
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return rs;    }
+
+    public ResultSet recherche(String s ) {
+        ResultSet rs = null;
+        try {
+            String req = "SELECT * FROM `event` WHERE nom like '%"+s+"%'";
+            PreparedStatement st = cnx2.prepareStatement(req);
+            rs = st.executeQuery(req);
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return rs;    }
+
+
     public ResultSet Getallparticipation(int id) {
         ResultSet rs = null;
         try {

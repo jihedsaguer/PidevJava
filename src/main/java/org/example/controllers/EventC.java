@@ -1,12 +1,21 @@
 package org.example.controllers;
 
 import com.gluonhq.maps.MapLayer;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -18,8 +27,13 @@ import org.example.service.EventService;
 import org.example.service.ParticipationService;
 import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class EventC {
 
@@ -66,6 +80,9 @@ public class EventC {
 
     @FXML
     private VBox box;
+
+    @FXML
+    private ImageView qrcode;
 
     EventService es = new EventService();
 
@@ -191,6 +208,36 @@ public class EventC {
         MapView mapView = createMapView();
         box.getChildren().add(mapView);
         VBox.setVgrow(mapView, Priority.ALWAYS);
+        try {
+            QRCodeWriter qrCodeWriter = new QRCodeWriter();
+            String Information = "Nom : " +q.getNom()+ "\n" + "description: " + q.getDescription() + "\n" + "date : " + q.getDate() + "\n" + "lieu : " + q.getLieu();
+            int width = 300;
+            int height = 300;
+
+            BufferedImage bufferedImage = null;
+            BitMatrix byteMatrix = qrCodeWriter.encode(Information, BarcodeFormat.QR_CODE, width, height);
+            bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+            bufferedImage.createGraphics();
+
+            Graphics2D graphics = (Graphics2D) bufferedImage.getGraphics();
+            graphics.setBackground(java.awt.Color.WHITE);
+            graphics.fillRect(0, 0, width, height);
+            graphics.setColor(java.awt.Color.BLACK);
+
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width; j++) {
+                    if (byteMatrix.get(i, j)) {
+                        graphics.fillRect(i, j, 1, 1);
+                    }
+                }
+            }
+            System.out.println("Success...");
+            qrcode.setImage(SwingFXUtils.toFXImage(bufferedImage, null));
+            //  ImageView qrc = new ImageView();
+            // TODO
+        } catch (WriterException ex) {
+            Logger.getLogger(EventC.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 
@@ -215,6 +262,36 @@ public class EventC {
         MapView mapView = createMapView();
         box.getChildren().add(mapView);
         VBox.setVgrow(mapView, Priority.ALWAYS);
+        try {
+            QRCodeWriter qrCodeWriter = new QRCodeWriter();
+            String Information = "Nom : " +q.getNom()+ "\n" + "description: " + q.getDescription() + "\n" + "date : " + q.getDate() + "\n" + "lieu : " + q.getLieu();
+            int width = 300;
+            int height = 300;
+
+            BufferedImage bufferedImage = null;
+            BitMatrix byteMatrix = qrCodeWriter.encode(Information, BarcodeFormat.QR_CODE, width, height);
+            bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+            bufferedImage.createGraphics();
+
+            Graphics2D graphics = (Graphics2D) bufferedImage.getGraphics();
+            graphics.setBackground(java.awt.Color.WHITE);
+            graphics.fillRect(0, 0, width, height);
+            graphics.setColor(java.awt.Color.BLACK);
+
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width; j++) {
+                    if (byteMatrix.get(i, j)) {
+                        graphics.fillRect(i, j, 1, 1);
+                    }
+                }
+            }
+            System.out.println("Success...");
+            qrcode.setImage(SwingFXUtils.toFXImage(bufferedImage, null));
+            //  ImageView qrc = new ImageView();
+            // TODO
+        } catch (WriterException ex) {
+            Logger.getLogger(EventC.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void setDataU(Event q,String idu) {
@@ -241,6 +318,36 @@ public class EventC {
         MapView mapView = createMapView();
         box.getChildren().add(mapView);
         VBox.setVgrow(mapView, Priority.ALWAYS);
+        try {
+            QRCodeWriter qrCodeWriter = new QRCodeWriter();
+            String Information = "Nom : " +q.getNom()+ "\n" + "description: " + q.getDescription() + "\n" + "date : " + q.getDate() + "\n" + "lieu : " + q.getLieu();
+            int width = 300;
+            int height = 300;
+
+            BufferedImage bufferedImage = null;
+            BitMatrix byteMatrix = qrCodeWriter.encode(Information, BarcodeFormat.QR_CODE, width, height);
+            bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+            bufferedImage.createGraphics();
+
+            Graphics2D graphics = (Graphics2D) bufferedImage.getGraphics();
+            graphics.setBackground(java.awt.Color.WHITE);
+            graphics.fillRect(0, 0, width, height);
+            graphics.setColor(java.awt.Color.BLACK);
+
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width; j++) {
+                    if (byteMatrix.get(i, j)) {
+                        graphics.fillRect(i, j, 1, 1);
+                    }
+                }
+            }
+            System.out.println("Success...");
+            qrcode.setImage(SwingFXUtils.toFXImage(bufferedImage, null));
+            //  ImageView qrc = new ImageView();
+            // TODO
+        } catch (WriterException ex) {
+            Logger.getLogger(EventC.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private MapView createMapView() {
