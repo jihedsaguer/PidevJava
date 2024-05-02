@@ -34,6 +34,9 @@
       <Button layoutX="744.0" layoutY="446.0" mnemonicParsing="false" onAction="#refresh" prefHeight="26.0" prefWidth="98.0" text="Refresh" />
       <Button layoutX="32.0" layoutY="446.0" mnemonicParsing="false" onAction="#logout" prefHeight="26.0" prefWidth="98.0" text="Logout" />
       <TextField fx:id="searchField" layoutX="372.0" layoutY="20.0" prefHeight="21.0" promptText="chercher .." />
+      <Pagination fx:id="pagination" layoutX="20.0" layoutY="446.0" />
+
       <Button layoutX="691.0" layoutY="20.0" mnemonicParsing="false" onAction="#search" prefWidth="74.0" text="search" />
+
    </children>
 </AnchorPane>

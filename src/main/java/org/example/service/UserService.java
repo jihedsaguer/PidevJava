@@ -25,6 +25,8 @@ public class UserService implements ICrud<User>{
         }
         return rs;
     }
+    // Method to retrieve users within a specific range
+
     @Override
     public void ajouterEntite(User p) {
         String req1 = "INSERT INTO `user`( `email`, `roles`, `password`, `name`, `prenom`, `tel`, `is_banned`) VALUES (?,?,?,?,?,?,?)";
@@ -156,6 +158,20 @@ public class UserService implements ICrud<User>{
             stmt.setString(2, "%" + searchText + "%");
             stmt.setInt(3, limit);
             stmt.setInt(4, offset);
+            return stmt.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+// pagination function ;;
+    public ResultSet getUsersInRange(int startIndex, int endIndex) {
+        String query = "SELECT * FROM user LIMIT ? OFFSET ?";
+        try {
+            PreparedStatement stmt = cnx2.prepareStatement(query);
+            stmt.setInt(1, endIndex - startIndex);
+            stmt.setInt(2, startIndex);
             return stmt.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();

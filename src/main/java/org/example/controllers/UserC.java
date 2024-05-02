@@ -40,5 +40,10 @@ public class UserC {
         }
 
     }
+    public void setUser(User user) {
+        name.setText(user.getName());
+        mail.setText(user.getEmail());
+        // Populate more fields as needed
+    }
 
 }

@@ -8,6 +8,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import java.net.URL;
+import javafx.scene.control.ScrollPane;
+
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -43,14 +45,102 @@ public class Dashboard {
     private GridPane grid;
     @FXML
     private Pagination pagination;
+    @FXML
+
+    // Total number of users
+    private int totalUsers = 50 ;/* Get the total number of users */;
+
+    // Number of users per page
+    private int usersPerPage = 5;
 
     UserService us = new UserService();
 
     @FXML
     public void initialize() {
+        int totalPages = (int) Math.ceil((double) totalUsers / usersPerPage);
+
+        // Set the number of pages for pagination
+        pagination.setPageCount(totalPages);
+
+        // Set up the event handler for pagination
+        pagination.currentPageIndexProperty().addListener((obs, oldIndex, newIndex) -> {
+            changePage(newIndex.intValue());
+        });
+
+        // Display the initial page
+        changePage(0);
         grid.getChildren().clear();
         displayg("");
     }
+    private void changePage(int pageIndex) {
+        // Calculate the start and end index of users for the current page
+        int startIndex = pageIndex * usersPerPage;
+        int endIndex = Math.min(startIndex + usersPerPage, totalUsers);
+
+        // Clear existing content from the GridPane
+        grid.getChildren().clear();
+
+        // Populate the GridPane with users from startIndex to endIndex
+        displayUsers(startIndex, endIndex);
+    }
+    private void displayUsers(int startIndex, int endIndex) {
+        // Clear the GridPane
+        grid.getChildren().clear();
+
+        // Retrieve users from the database based on the start and end index
+        ResultSet resultSet = us.getUsersInRange(startIndex, endIndex);
+
+        try {
+            int row = 0;
+            int column = 0;
+
+            // Set padding and margin for user cards
+            Insets cardInsets = new Insets(10);
+            int cardSpacing = 10;
+
+            // Loop through the result set and populate the GridPane with user data
+            while (resultSet.next()) {
+                // Load the UserCard.fxml and controller
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/User.fxml"));
+                AnchorPane userCard = loader.load();
+                UserC controller = loader.getController();
+
+                // Populate user data
+                User user = new User(
+                        resultSet.getInt("id"),
+                        resultSet.getString("email"),
+                        resultSet.getString("roles"),
+                        resultSet.getString("password"),
+                        resultSet.getString("name"),
+                        resultSet.getString("prenom"),
+                        resultSet.getInt("tel"),
+                        resultSet.getInt("is_banned")
+                );
+
+                // Set user data in the controller
+                controller.setUser(user);
+
+                // Set padding and margin for the user card
+                userCard.setStyle("-fx-background-color: #f9f9f9; -fx-background-radius: 5px; -fx-border-color: #ccc; -fx-border-radius: 5px; -fx-border-width: 1px;");
+                userCard.setPadding(cardInsets);
+
+                // Set spacing between user cards
+                GridPane.setMargin(userCard, new Insets(0, 0, cardSpacing, 0));
+
+                // Add the user card to the GridPane
+                grid.add(userCard, column++, row);
+
+                // Increment row after adding user card
+                if (column == 3) { // Adjust the column count as needed
+                    column = 0;
+                    row++;
+                }
+            }
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @FXML
     void refresh(ActionEvent event) {
