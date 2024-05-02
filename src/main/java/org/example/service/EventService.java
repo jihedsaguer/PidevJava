@@ -28,7 +28,7 @@ public class EventService implements ICrud<Event>{
     }
     @Override
     public void ajouterEntite(Event p) {
-        String req1 = "INSERT INTO `event`( `nom`, `description`, `lieu`, `date`,`image`) VALUES (?,?,?,?,?)";
+        String req1 = "INSERT INTO `event`( `nom`, `description`, `lieu`, `date`,`image`,`lat`,`long`) VALUES (?,?,?,?,?,?,?)";
         try {
             PreparedStatement st = cnx2.prepareStatement(req1);
             st.setString(1, p.getNom());
@@ -36,6 +36,8 @@ public class EventService implements ICrud<Event>{
             st.setString(3,p.getLieu());
             st.setString(4, p.getDate());
             st.setString(5, p.getImage());
+            st.setDouble(6, p.getLan());
+            st.setDouble(7, p.getLon());
             st.executeUpdate();
             System.out.println("event ajouté");
         } catch (SQLException e) {

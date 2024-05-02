@@ -1,15 +1,23 @@
 package org.example.controllers;
 
+import com.gluonhq.maps.MapLayer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Point2D;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import org.example.entities.Event;
 import javafx.fxml.FXML;
 import org.example.entities.Participation;
 import org.example.service.EventService;
 import org.example.service.ParticipationService;
-
+import com.gluonhq.maps.MapPoint;
+import com.gluonhq.maps.MapView;
 import java.io.IOException;
 import java.time.LocalDate;
 
@@ -56,10 +64,14 @@ public class EventC {
     @FXML
     private Button toupdate1;
 
+    @FXML
+    private VBox box;
+
     EventService es = new EventService();
 
     ParticipationService ps = new ParticipationService();
 
+    private MapPoint eiffelPoint = new MapPoint( 48.8583701,  2.2944813);
 
     @FXML
     void update(ActionEvent event) {
@@ -175,6 +187,10 @@ public class EventC {
         toupdate.setVisible(true);
         toupdate1.setVisible(false);
         toparticiper.setVisible(false);
+        eiffelPoint.update(q.getLan(), q.getLon());
+        MapView mapView = createMapView();
+        box.getChildren().add(mapView);
+        VBox.setVgrow(mapView, Priority.ALWAYS);
     }
 
 
@@ -195,6 +211,10 @@ public class EventC {
         toupdate1.setVisible(false);
         todelete.setVisible(false);
         iduu.setText(idu);
+        eiffelPoint.update(q.getLan(), q.getLon());
+        MapView mapView = createMapView();
+        box.getChildren().add(mapView);
+        VBox.setVgrow(mapView, Priority.ALWAYS);
     }
 
     public void setDataU(Event q,String idu) {
@@ -215,6 +235,39 @@ public class EventC {
         todelete.setVisible(false);
         toparticiper.setText("Supprimer");
         iduu.setText(idu);
+        this.event.setLan(q.getLan());
+        this.event.setLon(q.getLon());
+        eiffelPoint.update(q.getLan(), q.getLon());
+        MapView mapView = createMapView();
+        box.getChildren().add(mapView);
+        VBox.setVgrow(mapView, Priority.ALWAYS);
     }
+
+    private MapView createMapView() {
+        MapView mapView = new MapView();
+        mapView.setPrefSize(  500,  400);
+        mapView.addLayer(new CustomMapLayer());
+        mapView.setZoom (5);
+        mapView.flyTo(  0, eiffelPoint,  0.1);
+        return mapView;
+    }
+
+    private class CustomMapLayer extends MapLayer {
+        private final Node marker;
+
+
+        public CustomMapLayer() {
+            marker = new Circle(5, Color.RED);
+            getChildren().add(marker);
+        }
+
+        @Override
+        protected void layoutLayer() {
+            Point2D point = getMapPoint (eiffelPoint.getLatitude(), eiffelPoint.getLongitude());
+            marker.setTranslateX(point.getX());
+            marker.setTranslateY(point.getY());
+        }
+    }
+
 
 }

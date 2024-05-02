@@ -201,7 +201,9 @@ public class Interface {
                     String decsription=resultSet2.getString("description");
                     String lieu=resultSet2.getString("lieu");
                     String date=resultSet2.getString("date");
-                    Event ppppp = new Event(id,nom,decsription,"",date,lieu);
+                    double lat=resultSet2.getDouble("lat");
+                    double lon=resultSet2.getDouble("long");
+                    Event ppppp = new Event(id,nom,decsription,"",date,lieu,lat,lon);
                     itemController.setDataF(ppppp,idu);
                     if (column == 1) {
                         column = 0;
@@ -251,7 +253,10 @@ public class Interface {
                     String decsription=resultSet2.getString("description");
                     String lieu=resultSet2.getString("lieu");
                     String date=resultSet2.getString("date");
-                    Event ppppp = new Event(id,nom,decsription,"",date,lieu);
+                    double lat=resultSet2.getDouble("lat");
+                    double lon=resultSet2.getDouble("long");
+                    Event ppppp = new Event(id,nom,decsription,"",date,lieu,lat,lon);
+
                     itemController.setDataU(ppppp,idu);
                     if (column == 1) {
                         column = 0;

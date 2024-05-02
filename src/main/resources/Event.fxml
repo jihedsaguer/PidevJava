@@ -5,13 +5,12 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="263.0" prefWidth="777.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controllers.EventC">
    <children>
-      <ImageView fitHeight="150.0" fitWidth="168.0" layoutX="14.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true" />
       <Separator layoutX="201.0" layoutY="9.0" orientation="VERTICAL" prefHeight="166.0" prefWidth="0.0" />
       <Label fx:id="nom" layoutX="241.0" layoutY="14.0" prefHeight="18.0" prefWidth="206.0" text="Label">
          <font>
@@ -39,5 +38,6 @@
       <Label fx:id="id" layoutX="702.0" layoutY="209.0" opacity="0.0" text="Label" />
       <Button fx:id="toparticiper" layoutX="492.0" layoutY="204.0" mnemonicParsing="false" onAction="#participer" prefHeight="26.0" prefWidth="102.0" text="participer" />
       <Label fx:id="iduu" layoutX="529.0" layoutY="166.0" opacity="0.0" text="Label" />
+      <VBox fx:id="box" layoutX="14.0" layoutY="22.0" prefHeight="200.0" prefWidth="178.0" />
    </children>
 </AnchorPane>

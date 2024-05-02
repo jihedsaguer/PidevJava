@@ -7,6 +7,8 @@ public class Event {
     private String image ;
     private String lieu ;
     private String date ;
+    private double lan ;
+    private double lon ;
 
     public Event() {
     }
@@ -20,12 +22,49 @@ public class Event {
         this.date = date;
     }
 
+    public Event(int id, String nom, String description, String image, String lieu, String date,double lan,double lon) {
+        this.id = id;
+        this.nom = nom;
+        this.description = description;
+        this.image = image;
+        this.lieu = lieu;
+        this.date = date;
+        this.lan=lan;
+        this.lon=lon;
+    }
+
+    public double getLan() {
+        return lan;
+    }
+
+    public void setLan(double lan) {
+        this.lan = lan;
+    }
+
+    public double getLon() {
+        return lon;
+    }
+
+    public void setLon(double lon) {
+        this.lon = lon;
+    }
+
     public Event(String nom, String description, String image, String lieu, String date) {
         this.nom = nom;
         this.description = description;
         this.image = image;
         this.lieu = lieu;
         this.date = date;
+    }
+
+    public Event(String nom, String description, String image, String lieu, String date,double lan,double lon) {
+        this.nom = nom;
+        this.description = description;
+        this.image = image;
+        this.lieu = lieu;
+        this.date = date;
+        this.lan=lan;
+        this.lon=lon;
     }
 
     public int getId() {

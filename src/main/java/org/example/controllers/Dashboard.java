@@ -44,6 +44,12 @@ public class Dashboard {
     @FXML
     private TextField tf_nom;
 
+    @FXML
+    private TextField tf_lan;
+
+    @FXML
+    private TextField tf_lon;
+
     EventService es = new EventService();
 
     @FXML
@@ -63,7 +69,7 @@ public class Dashboard {
         String nom = tf_nom.getText();
         String lieu = tf_lieu.getText();
         String date = String.valueOf(tf_date.getValue());
-        Event p = new Event(nom,description,"default",lieu,date);
+        Event p = new Event(nom,description,"default",lieu,date,Double.parseDouble(tf_lan.getText()),Double.parseDouble(tf_lon.getText()));
         es.ajouterEntite(p);
         tf_nom.clear();
         tf_desc.clear();
@@ -123,7 +129,9 @@ public class Dashboard {
                     String decsription=resultSet2.getString("description");
                     String lieu=resultSet2.getString("lieu");
                     String date=resultSet2.getString("date");
-                    Event ppppp = new Event(id,nom,decsription,"",date,lieu);
+                    double lat=resultSet2.getDouble("lat");
+                    double lon=resultSet2.getDouble("long");
+                    Event ppppp = new Event(id,nom,decsription,"",date,lieu,lat,lon);
                     itemController.setData(ppppp);
                     if (column == 1) {
                         column = 0;
