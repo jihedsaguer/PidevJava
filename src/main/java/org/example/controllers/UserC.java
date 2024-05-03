@@ -44,6 +44,7 @@ public class UserC {
         name.setText(user.getName());
         mail.setText(user.getEmail());
         // Populate more fields as needed
+        tel.setText(String.valueOf(user.getTel()));
     }
 
 }

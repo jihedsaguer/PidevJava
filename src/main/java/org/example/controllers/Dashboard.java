@@ -65,8 +65,9 @@ public class Dashboard {
         // Set up the event handler for pagination
         pagination.currentPageIndexProperty().addListener((obs, oldIndex, newIndex) -> {
             changePage(newIndex.intValue());
-        });
 
+        });
+           pagination.setCurrentPageIndex(0);
         // Display the initial page
         changePage(0);
         grid.getChildren().clear();
@@ -95,7 +96,7 @@ public class Dashboard {
             int column = 0;
 
             // Set padding and margin for user cards
-            Insets cardInsets = new Insets(10);
+            Insets cardInsets = new Insets(5);
             int cardSpacing = 10;
 
             // Loop through the result set and populate the GridPane with user data
@@ -114,18 +115,18 @@ public class Dashboard {
                         resultSet.getString("name"),
                         resultSet.getString("prenom"),
                         resultSet.getInt("tel"),
+
                         resultSet.getInt("is_banned")
                 );
+
+                System.out.println(user);
 
                 // Set user data in the controller
                 controller.setUser(user);
 
-                // Set padding and margin for the user card
-                userCard.setStyle("-fx-background-color: #f9f9f9; -fx-background-radius: 5px; -fx-border-color: #ccc; -fx-border-radius: 5px; -fx-border-width: 1px;");
-                userCard.setPadding(cardInsets);
+
 
                 // Set spacing between user cards
-                GridPane.setMargin(userCard, new Insets(0, 0, cardSpacing, 0));
 
                 // Add the user card to the GridPane
                 grid.add(userCard, column++, row);

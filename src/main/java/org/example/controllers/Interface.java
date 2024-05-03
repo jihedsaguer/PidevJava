@@ -32,8 +32,19 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextField;
+
+
 public class Interface {
 
+    @FXML
+    public TextField captchaC;
+    @FXML
+    public TextField captchaE;
+    @FXML
+    public TextField captcha;
     @FXML
     private Pagination pagination;
 
@@ -44,15 +55,6 @@ public class Interface {
     @FXML
     private Pane pn_home;
 
-
-    @FXML
-    private TextField captcha;
-
-    @FXML
-    private TextField captchaC;
-
-    @FXML
-    private TextField captchaE;
 
     @FXML
     private Pane pn_index;
@@ -101,9 +103,10 @@ public class Interface {
 
     User tmpp = new User();
     UserService us = new UserService();
+
     @FXML
     void signup(ActionEvent event) {
-        if (tf_ln.getText().isEmpty() || tf_fn.getText().isEmpty() ||tf_num.getText().isEmpty() ||tf_email.getText().isEmpty()||tf_pass.getText().isEmpty()) {
+        if (tf_ln.getText().isEmpty() || tf_fn.getText().isEmpty() || tf_num.getText().isEmpty() || tf_email.getText().isEmpty() || tf_pass.getText().isEmpty()) {
             // Afficher un message d'alerte
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Champs manquants");
@@ -112,6 +115,7 @@ public class Interface {
             alert.showAndWait();
             return;
         }
+
         try {
             // Attempt to parse the text as an integer
             int num = Integer.parseInt(tf_num.getText());
@@ -122,7 +126,16 @@ public class Interface {
             alert.setHeaderText(null);
             alert.setContentText("Veuillez choisir un num exact !");
             alert.showAndWait();
+            captchaE.setText(""); // Clear the captcha error message
 
+            if (!captcha.getText().equalsIgnoreCase(captchaText)) {
+                captchaE.setText("Incorrect CAPTCHA!");
+
+                return; // Return if the captcha is incorrect
+            } else {
+                captchaE.setText(""); // Clear the captcha error message
+
+            }
             // Return or perform any necessary action based on the invalid input
             return;
         }
@@ -145,7 +158,7 @@ public class Interface {
         String pass = tf_pass.getText();
         int num = Integer.parseInt(tf_num.getText());
         //    public User(String email, String roles, String password, String name, String prenom, int tel, int is_banned) {
-        User u = new User(mail,"[\"ROLE_USER\"]",pass,fn,ln,num,0);
+        User u = new User(mail, "[\"ROLE_USER\"]", pass, fn, ln, num, 0);
         us.ajouterEntite(u);
         tf_fn.clear();
         tf_ln.clear();
@@ -193,7 +206,7 @@ public class Interface {
 
     @FXML
     void update(ActionEvent event) {
-        if (tf_ln1.getText().isEmpty() || tf_fn1.getText().isEmpty() ||tf_num1.getText().isEmpty() ||tf_email1.getText().isEmpty()||tf_pass1.getText().isEmpty()) {
+        if (tf_ln1.getText().isEmpty() || tf_fn1.getText().isEmpty() || tf_num1.getText().isEmpty() || tf_email1.getText().isEmpty() || tf_pass1.getText().isEmpty()) {
             // Afficher un message d'alerte
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Champs manquants");
@@ -229,13 +242,21 @@ public class Interface {
             alert.showAndWait();
             return;
         }
+        if (!captcha.getText().equalsIgnoreCase(captchaText)) {
+            captchaE.setText("Incorrect CAPTCHA!");
+
+            return; // Return if the captcha is incorrect
+        } else {
+            captchaE.setText(""); // Clear the captcha error message
+
+        }
         String ln = tf_ln1.getText();
         String fn = tf_fn1.getText();
         String mail = tf_email1.getText();
         String pass = tf_pass1.getText();
         int num = Integer.parseInt(tf_num1.getText());
         //    public User(String email, String roles, String password, String name, String prenom, int tel, int is_banned) {
-        User u = new User(Integer.parseInt(id.getText()),mail,"[\"ROLE_USER\"]",pass,fn,ln,num,0);
+        User u = new User(Integer.parseInt(id.getText()), mail, "[\"ROLE_USER\"]", pass, fn, ln, num, 0);
         us.modifierEntite(u);
 
     }
@@ -279,8 +300,9 @@ public class Interface {
     @FXML
     void login(ActionEvent event) {
 
-        ResultSet resultSet = us.log(tf_log.getText(),tf_pw.getText());
+        ResultSet resultSet = us.log(tf_log.getText(), tf_pw.getText());
         try {
+
             if (resultSet.next()) {
                 tmpp = new User(
                         resultSet.getInt("id"),
@@ -297,14 +319,13 @@ public class Interface {
                 tf_pass1.setText(tmpp.getPassword());
                 tf_fn1.setText(tmpp.getPrenom());
                 tf_ln1.setText(tmpp.getName());
-                if (tmpp.getIs_banned()==1)
-                {
+                if (tmpp.getIs_banned() == 1) {
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("User banned");
                     alert.setHeaderText(null);
                     alert.setContentText("Usr banned !");
                     alert.showAndWait();
-                }else{
+                } else {
                     if (tmpp.getRoles().equals("[\"ROLE_ADMIN\"]")) {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Dashboard.fxml"));
                         Parent adminRoot = loader.load();
@@ -313,12 +334,13 @@ public class Interface {
                         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
                         window.setScene(adminScene);
                         window.show();
-                    }else{
+                    } else {
                         pn_home.toFront();
                         pn_index.toFront();
                     }
-                }}else
-            {
+                }
+                System.out.println(tmpp.getTel());
+            } else {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Information incorrect");
                 alert.setHeaderText(null);
@@ -327,7 +349,8 @@ public class Interface {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } catch (IOException e) {            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
 
@@ -355,6 +378,7 @@ public class Interface {
         forgetPwdStage.showAndWait();
         System.out.println("Forgot Password button clicked!");
     }
+    private String captchaText;
 
     private void generateCaptcha() {
         // Generate a random sequence of letters for the CAPTCHA
@@ -366,13 +390,14 @@ public class Interface {
         }
         String captchaText = captcha.toString();
         captchaC.setText(captchaText);
+        System.out.println(captchaText);
     }
-
+    // Method to generate CAPTCHA
     @FXML
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize() {
         generateCaptcha();
     }
-    }
+}
 
 
 
