@@ -29,6 +29,7 @@ import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -54,7 +55,10 @@ public class Interface {
     private TextField tf_log;
     @FXML
     private Pane pn_home;
-
+    @FXML
+    private TextField tous;
+    @FXML
+    private Button btnclose;
 
     @FXML
     private Pane pn_index;
@@ -67,6 +71,8 @@ public class Interface {
 
     @FXML
     private Pane pn_update;
+    @FXML
+    private Preferences preferences;
 
     @FXML
     private TextField tf_email;
@@ -79,7 +85,10 @@ public class Interface {
 
     @FXML
     private TextField tf_fn;
-
+    @FXML
+    private TextField tousE;
+    @FXML
+    private TextField numE;
     @FXML
     private TextField tf_fn1;
 
@@ -107,6 +116,7 @@ public class Interface {
     @FXML
     void signup(ActionEvent event) {
         if (tf_ln.getText().isEmpty() || tf_fn.getText().isEmpty() || tf_num.getText().isEmpty() || tf_email.getText().isEmpty() || tf_pass.getText().isEmpty()) {
+           tousE.setText("rempliiiiiiiir" );
             // Afficher un message d'alerte
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Champs manquants");
@@ -123,6 +133,8 @@ public class Interface {
             // If parsing fails (NumberFormatException is thrown), display an alert
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Num tel incorrect");
+            numE.setText("num" );
+
             alert.setHeaderText(null);
             alert.setContentText("Veuillez choisir un num exact !");
             alert.showAndWait();
@@ -263,6 +275,8 @@ public class Interface {
 
     @FXML
     void toSignup(ActionEvent event) {
+        generateCaptcha();
+
         pn_signup.toFront();
     }
 
@@ -284,6 +298,7 @@ public class Interface {
 
     @FXML
     public void pwd(ActionEvent event) throws SQLException, IOException {
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/forgot.fxml"));
         Parent signInRoot = loader.load();
         Scene signInScene = new Scene(signInRoot);
@@ -363,21 +378,7 @@ public class Interface {
         pn_update.toBack();
     }
 
-    @FXML
-    private void forgotPassword() throws IOException {
-        // Implement the action to perform when "Forgot Password" button is clicked
-        // For example, display a dialog or navigate to a password recovery page
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/forgot.fxml"));
-        Parent signInRoot = loader.load();
-        Scene signInScene = new Scene(signInRoot);
 
-        // Create a new stage for the forget password window
-        Stage forgetPwdStage = new Stage();
-        forgetPwdStage.initModality(Modality.APPLICATION_MODAL); // Set modality to APPLICATION_MODAL
-        forgetPwdStage.setScene(signInScene);
-        forgetPwdStage.showAndWait();
-        System.out.println("Forgot Password button clicked!");
-    }
     private String captchaText;
 
     private void generateCaptcha() {
@@ -395,9 +396,9 @@ public class Interface {
     // Method to generate CAPTCHA
     @FXML
     public void initialize() {
-        generateCaptcha();
     }
-}
+
+    }
 
 
 

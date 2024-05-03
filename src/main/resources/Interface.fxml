@@ -24,10 +24,19 @@
                <font>
                   <Font name="Berlin Sans FB" size="12.0" />
                </font></TextField>
+            <TextField fx:id="tousE" editable="false" layoutX="400.0" layoutY="39.0" prefHeight="43.0" prefWidth="400.0" stylesheets="@style.css">
+            <font>
+               <Font name="System Bold" size="17.0" />
+            </font></TextField>
+            <TextField fx:id="numE" alignment="CENTER" editable="false" layoutX="85.0" layoutY="260.0" prefHeight="30.0" prefWidth="250.0" stylesheets="@style.css">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font></TextField>
             <TextField fx:id="tf_num" alignment="TOP_CENTER" layoutX="80.0" layoutY="236.0" prefHeight="26.0" prefWidth="244.0" promptText="Your phone number .." stylesheets="@style.css">
                <font>
                   <Font name="Berlin Sans FB" size="12.0" />
                </font></TextField>
+
             <TextField fx:id="tf_email" alignment="TOP_CENTER" layoutX="491.0" layoutY="237.0" prefHeight="26.0" prefWidth="244.0" promptText="Your email .." stylesheets="@style.css">
                <font>
                   <Font name="Berlin Sans FB" size="12.0" />
@@ -36,17 +45,17 @@
                <font>
                   <Font name="Berlin Sans FB" size="12.0" />
                </font></TextField>
-            <TextField fx:id="captcha" layoutX="152.0" layoutY="12.0" prefHeight="27.0" prefWidth="270.0" promptText="captcha">
+            <TextField fx:id="captcha" layoutX="600.0" layoutY="480.0" prefHeight="25.0" prefWidth="200.0" promptText="captcha">
                <font>
                   <Font name="Bodoni MT Black Italic" size="13.0" />
                </font>
             </TextField>
-            <TextField fx:id="captchaE" layoutX="163.0" layoutY="62.0" prefHeight="30.0" prefWidth="171.0" promptText="captchaE">
+            <TextField fx:id="captchaE" layoutX="350.0" layoutY="450.0" prefHeight="30.0" prefWidth="171.0" promptText="captchaE">
                <font>
                   <Font name="Bodoni MT Black Italic" size="13.0" />
                </font>
             </TextField>
-            <TextField fx:id="captchaC" layoutX="152.0" layoutY="37.0" prefHeight="27.0" prefWidth="270.0" promptText="captchaC">
+            <TextField fx:id="captchaC" layoutX="350.0" layoutY="450.0" prefHeight="30.0" prefWidth="171.0" promptText="captchaC">
                <font>
                   <Font name="Bodoni MT Black Italic" size="13.0" />
                </font>
@@ -114,9 +123,9 @@
             <PasswordField fx:id="tf_pw" layoutX="519.0" layoutY="225.0" prefHeight="40.0" prefWidth="317.0" promptText="Your password .." />
             <Button layoutX="626.0" layoutY="285.0" mnemonicParsing="false" onAction="#login" prefHeight="32.0" prefWidth="104.0" text="Login" />
             <Hyperlink layoutX="599.0" layoutY="328.0" onAction="#toSignup" text="don't have account ? signup" />
-            <HBox layoutX="276.0" layoutY="412.0" prefHeight="52.0" prefWidth="208.0" styleClass="border" stylesheets="@style.css" />
+            <Button layoutX="626.0" layoutY="382.0" mnemonicParsing="false" onAction="#pwd" prefHeight="0.0" prefWidth="104.0" text="forgot" />
 
-                                                                                                                                                                                                                                          <Label layoutX="599.0" layoutY="112.0" prefHeight="32.0" prefWidth="171.0" text="Hello and welcome back">
+                                                                  <HBox layoutX="276.0" layoutY="412.0" prefHeight="52.0" prefWidth="208.0" styleClass="border" stylesheets="@style.css" />                                                                                                                                                                                       <Label layoutX="599.0" layoutY="112.0" prefHeight="32.0" prefWidth="171.0" text="Hello and welcome back">
                <font>
                   <Font name="Segoe UI Bold" size="13.0" />
                </font>

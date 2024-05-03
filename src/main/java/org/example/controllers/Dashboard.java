@@ -149,6 +149,8 @@ public class Dashboard {
         displayg("");
     }
 
+
+
     @FXML
     void logout(ActionEvent event) throws IOException {
         System.out.println("logging out");
