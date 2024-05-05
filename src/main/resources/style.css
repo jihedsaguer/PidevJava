@@ -39,18 +39,13 @@
 
 
 /* Align text fields */
-.text-field {
-    -fx-pref-width: 250px; /* Set preferred width for text fields */
-    -fx-padding: 8px; /* Add padding */
-}
+
 #captchaC
 {
     -fx-background-color: white;
 }
-#numE
-{
+#numE {
     -fx-background-color: white;
 
 
 }
-

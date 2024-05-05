@@ -150,20 +150,7 @@ public class UserService implements ICrud<User>{
             System.out.println(e.getMessage());
         }
     }
-    public ResultSet searchUsers(String searchText, int offset, int limit) {
-        String query = "SELECT * FROM user WHERE name LIKE ? OR email LIKE ? LIMIT ? OFFSET ?";
-        try {
-            PreparedStatement stmt = cnx2.prepareStatement(query);
-            stmt.setString(1, "%" + searchText + "%");
-            stmt.setString(2, "%" + searchText + "%");
-            stmt.setInt(3, limit);
-            stmt.setInt(4, offset);
-            return stmt.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+
 
 // pagination function ;;
     public ResultSet getUsersInRange(int startIndex, int endIndex) {

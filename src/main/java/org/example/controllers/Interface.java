@@ -7,35 +7,19 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.example.service.UserService;
-import com.twilio.Twilio;
-import com.twilio.rest.api.v2010.account.Message;
-import com.twilio.type.PhoneNumber;
-import javafx.scene.layout.Pane;
 import org.example.entities.User;
 import org.example.service.UserService;
-import org.example.tools.DBconnexion;
 
 import java.io.IOException;
-import java.net.URL;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Random;
-import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextField;
 
 
 public class Interface {
@@ -116,7 +100,7 @@ public class Interface {
     @FXML
     void signup(ActionEvent event) {
         if (tf_ln.getText().isEmpty() || tf_fn.getText().isEmpty() || tf_num.getText().isEmpty() || tf_email.getText().isEmpty() || tf_pass.getText().isEmpty()) {
-           tousE.setText("rempliiiiiiiir" );
+           tousE.setText("remplir tous les champs svp" );
             // Afficher un message d'alerte
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Champs manquants");
@@ -124,6 +108,17 @@ public class Interface {
             alert.setContentText("Veuillez remplir tous les champs !");
             alert.showAndWait();
             return;
+        }
+
+        if (!captcha.getText().equalsIgnoreCase(captchaText)) {
+            captchaE.setText("Incorrect CAPTCHA!");
+            tousE.setText("oyyyyy");
+            tf_email.setText("");
+            numE.setText("");
+            return; // Return if the captcha is incorrect
+        } else {
+            captchaE.setText("oyyyyyyy"); // Clear the captcha error message
+
         }
 
         try {
@@ -140,16 +135,6 @@ public class Interface {
             alert.showAndWait();
             captchaE.setText(""); // Clear the captcha error message
 
-            if (!captcha.getText().equalsIgnoreCase(captchaText)) {
-                captchaE.setText("Incorrect CAPTCHA!");
-
-                return; // Return if the captcha is incorrect
-            } else {
-                captchaE.setText(""); // Clear the captcha error message
-
-            }
-            // Return or perform any necessary action based on the invalid input
-            return;
         }
         String emailPattern = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         Pattern pattern = Pattern.compile(emailPattern);
@@ -227,6 +212,7 @@ public class Interface {
             alert.showAndWait();
             return;
         }
+
         try {
             // Attempt to parse the text as an integer
             int num = Integer.parseInt(tf_num1.getText());
@@ -254,14 +240,8 @@ public class Interface {
             alert.showAndWait();
             return;
         }
-        if (!captcha.getText().equalsIgnoreCase(captchaText)) {
-            captchaE.setText("Incorrect CAPTCHA!");
 
-            return; // Return if the captcha is incorrect
-        } else {
-            captchaE.setText(""); // Clear the captcha error message
 
-        }
         String ln = tf_ln1.getText();
         String fn = tf_fn1.getText();
         String mail = tf_email1.getText();
@@ -299,7 +279,7 @@ public class Interface {
     @FXML
     public void pwd(ActionEvent event) throws SQLException, IOException {
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/forgot.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/chooseforget.fxml"));
         Parent signInRoot = loader.load();
         Scene signInScene = new Scene(signInRoot);
 
