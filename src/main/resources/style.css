@@ -41,3 +41,7 @@
 #logE
 {    -fx-text-fill: red; /* Red text color */
 }
+.Label
+{
+    -fx-text-fill: red;
+}
