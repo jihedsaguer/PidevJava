@@ -40,11 +40,8 @@
             <artifactId>poi</artifactId>
             <version>5.2.4</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>5.2.4</version>
-        </dependency>
+
+
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-base</artifactId>
@@ -56,11 +53,6 @@
             <version>1.6.2</version>
         </dependency>
         <!-- Add this to your pom.xml -->
-        <dependency>
-            <groupId>com.twilio.sdk</groupId>
-            <artifactId>twilio</artifactId>
-            <version>8.17.0</version> <!-- Replace with the latest version -->
-        </dependency>
 
         <dependency>
             <groupId>com.sun.activation</groupId>
@@ -76,6 +68,11 @@
             <groupId>org.mindrot</groupId>
             <artifactId>jbcrypt</artifactId>
             <version>0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.2.4</version>
         </dependency>
 
     </dependencies>

@@ -101,7 +101,6 @@ public class Dashboard {
                         resultSet.getString("name"),
                         resultSet.getString("prenom"),
                         resultSet.getInt("tel"),
-
                         resultSet.getInt("is_banned")
                 );
 
@@ -217,7 +216,14 @@ public class Dashboard {
 
 
     }
-    
+
+    private final UserService userService = new UserService();
+
+    @FXML
+    void exportToExcel(ActionEvent event) {
+        System.out.println("qqqqqqqqqqq");
+        userService.exportUsersToExcel();
+    }
 
 
 

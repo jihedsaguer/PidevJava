@@ -8,44 +8,36 @@
     -fx-padding: 20px;
     -fx-alignment: center;
 }
-
-.label {
-    /* Remove unnecessary styles */
-    -fx-font-family: "Segoe UI", sans-serif; /* Set font family */
-    -fx-text-fill: #333; /* Text color */
+#pn_signup {
+    -fx-background-color: #f4a460; /* Light brown */
 }
-
-.button {
-    /* Remove unnecessary styles */
-    -fx-font-size: 14px; /* Font size */
-    -fx-background-radius: 5px; /* Button border radius */
-    -fx-cursor: pointer; /* Change cursor on hover */
-}
-
-.hyperlink {
-    /* Remove unnecessary styles */
-    -fx-font-size: 14px; /* Font size */
-}
-
-.pane {
-    /* Remove unnecessary styles */
-    -fx-background-color: transparent; /* Transparent background for panes */
-    -fx-border-radius: 10px; /* Border radius */
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 1); /* Add shadow effect */
-}
-
-/* Adjust layout positions as needed */
-/* Style for the "Create new Account" section */
-
-
-/* Align text fields */
-
-#captchaC
+.text-field
 {
     -fx-background-color: white;
+    -fx-border-radius: 10px ;
+    -fx-border-color:  black;
+    -fx-text-fill: #333;
+    -fx-font-size: 18pt; /* Font size */
 }
-#numE {
-    -fx-background-color: white;
+#captcha, #captchaE, #captchaC {
+    -fx-font-size: 16px;
+    -fx-border-radius: 10px;
+    -fx-background-color: lightgrey; /* Light grey background */
+    -fx-text-fill: white; /* White text color */
+}
+/* Style button */
+.button {
+    -fx-background-color: #007bff; /* Blue color */
+    -fx-border-radius: 8px;
+}
 
-
+/* Add hover effect on button */
+.button:hover {
+    -fx-background-color: #0056b3; /* Darker blue color on hover */
+}
+#tousE {
+    -fx-text-fill: red; /* Red text color */
+}
+#logE
+{    -fx-text-fill: red; /* Red text color */
 }

@@ -28,14 +28,19 @@
       <Button layoutX="744.0" layoutY="446.0" mnemonicParsing="false" onAction="#refresh" prefHeight="26.0" prefWidth="98.0" text="Refresh" AnchorPane.topAnchor="550.2" />
       <Button layoutX="32.0" layoutY="446.0" mnemonicParsing="false" onAction="#logout" prefHeight="26.0" prefWidth="98.0" text="Logout" AnchorPane.topAnchor="559.0" />
       <TextField fx:id="searchField" layoutX="372.0" layoutY="20.0" prefHeight="21.0" promptText="chercher .." />
-      <Button layoutX="130.0" layoutY="503.0" mnemonicParsing="false" onAction="#excel" prefHeight="34.0" prefWidth="110.0" styleClass="Other_btn" stylesheets="@tn/esprit/connectart/style.css" text="Excel" textFill="WHITE">
+      <Button layoutX="130.0" layoutY="503.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="110.0" styleClass="Other_btn"  text="Excel" textFill="WHITE"> </Button>
+
+
+
+      <Button layoutX="130.0" layoutY="503.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="110.0" styleClass="Other_btn" text="Export to Excel" onAction="#exportToExcel">
          <font>
             <Font name="Arial" size="24.0" />
          </font>
       </Button>
 
-
       <Button layoutX="691.0" layoutY="20.0" mnemonicParsing="false" onAction="#search" prefWidth="74.0" text="search" />
+
+
 
    </children>
 </AnchorPane>

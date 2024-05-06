@@ -1,11 +1,18 @@
 package org.example.service;
 
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.example.entities.User;
 import org.example.tools.DBconnexion;
-
-import java.sql.*;
-import java.util.List;
 import org.mindrot.jbcrypt.BCrypt;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
 
 
 public class UserService implements ICrud<User>{
@@ -34,7 +41,7 @@ public class UserService implements ICrud<User>{
             PreparedStatement st = cnx2.prepareStatement(req1);
             st.setString(1, p.getEmail());
             st.setString(2, p.getRoles());
-            st.setString(3,p.getPassword());
+            st.setString(3, hashPassword(p.getPassword())); // Hash the password before storing
             st.setString(4, p.getName());
             st.setString(5, p.getPrenom());
             st.setInt(6,p.getTel());
@@ -167,7 +174,110 @@ public class UserService implements ICrud<User>{
     }
 
 
+    public void exportUsersToExcel() {
+        String query = "SELECT * FROM user";
+        try (PreparedStatement stmt = cnx2.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
 
+            // Create a new workbook
+            try (Workbook workbook = new XSSFWorkbook()) {
+                // Create a new sheet
+                Sheet sheet = workbook.createSheet("User Data");
+
+                // Create a header row
+                Row headerRow = sheet.createRow(0);
+                String[] columns = {"ID", "Email", "Roles", "Password", "Name", "Prenom", "Tel", "Is Banned"};
+                for (int i = 0; i < columns.length; i++) {
+                    Cell cell = headerRow.createCell(i);
+                    cell.setCellValue(columns[i]);
+
+                    // Apply cell style for header cells
+                    CellStyle headerStyle = workbook.createCellStyle();
+                    Font headerFont = workbook.createFont();
+                    headerFont.setBold(true);
+                    headerStyle.setFont(headerFont);
+                    headerStyle.setAlignment(HorizontalAlignment.CENTER);
+                    headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+                    headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+                    cell.setCellStyle(headerStyle); // Apply style to the cell
+                }
+
+                // Populate data rows
+                int rowNum = 1;
+                int totalUsers = 0;
+                while (rs.next()) {
+                    Row row = sheet.createRow(rowNum++);
+                    row.createCell(0).setCellValue(rs.getInt("id"));
+                    row.createCell(1).setCellValue(rs.getString("email"));
+                    row.createCell(2).setCellValue(rs.getString("roles"));
+                    row.createCell(3).setCellValue(rs.getString("password"));
+                    row.createCell(4).setCellValue(rs.getString("name"));
+                    row.createCell(5).setCellValue(rs.getString("prenom"));
+                    row.createCell(6).setCellValue(rs.getInt("tel"));
+                    row.createCell(7).setCellValue(rs.getInt("is_banned"));
+
+                    // Apply cell style for data cells
+                    CellStyle dataStyle = workbook.createCellStyle();
+                    dataStyle.setAlignment(HorizontalAlignment.CENTER);
+
+// Check if the user is banned and set the name cell color to red
+                    if (rs.getInt("is_banned") == 1) {
+                        dataStyle.setFillForegroundColor(IndexedColors.RED.getIndex());
+                        dataStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+                    }
+
+// Apply the data style to all cells in the row
+                    for (Cell cell : row) {
+                        cell.setCellStyle(dataStyle);
+                    }
+
+                    // Increment the total number of users
+                    totalUsers++;
+                }
+
+                // Apply some additional styles
+                // Set column width
+                sheet.setColumnWidth(0, 2000); // ID column
+                sheet.setColumnWidth(1, 5000); // Email column
+                // Add borders to cells
+                for (int i = 0; i <= rowNum; i++) {
+                    Row row = sheet.getRow(i);
+                    if (row != null) {
+                        for (int j = 0; j < columns.length; j++) {
+                            Cell cell = row.getCell(j);
+                            if (cell != null) {
+                                CellStyle cellStyle = cell.getCellStyle();
+                                cellStyle.setBorderBottom(BorderStyle.THIN);
+                                cellStyle.setBorderTop(BorderStyle.THIN);
+                                cellStyle.setBorderLeft(BorderStyle.THIN);
+                                cellStyle.setBorderRight(BorderStyle.THIN);
+                            }
+                        }
+                    }
+                }
+
+                // Write the workbook to a file
+                try (FileOutputStream fileOut = new FileOutputStream("user_data.xlsx")) {
+                    workbook.write(fileOut);
+                    System.out.println("User data exported to user_data.xlsx successfully.");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    // Handle the exception
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                // Handle the exception
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle the exception
+        }
+    }
+    // Method to authenticate user
+
+
+    // Method to check if user exists
+ 
 
 }
 

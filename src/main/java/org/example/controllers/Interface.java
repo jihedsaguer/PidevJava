@@ -23,7 +23,8 @@ import java.util.regex.Pattern;
 
 
 public class Interface {
-
+    @FXML
+    public TextField logE;
     @FXML
     public TextField captchaC;
     @FXML
@@ -93,49 +94,49 @@ public class Interface {
 
     @FXML
     private TextField tf_pass1;
+    @FXML
+    private ToggleButton toggleButton; // Assuming you have a toggle button in your FXML
 
     User tmpp = new User();
     UserService us = new UserService();
+
+
+
+
+    // If using ToggleButton, bind this method to the ToggleButton's onAction event
 
     @FXML
     void signup(ActionEvent event) {
         if (tf_ln.getText().isEmpty() || tf_fn.getText().isEmpty() || tf_num.getText().isEmpty() || tf_email.getText().isEmpty() || tf_pass.getText().isEmpty()) {
            tousE.setText("remplir tous les champs svp" );
             // Afficher un message d'alerte
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Champs manquants");
-            alert.setHeaderText(null);
-            alert.setContentText("Veuillez remplir tous les champs !");
-            alert.showAndWait();
+
             return;
         }
 
-        if (!captcha.getText().equalsIgnoreCase(captchaText)) {
-            captchaE.setText("Incorrect CAPTCHA!");
-            tousE.setText("oyyyyy");
-            tf_email.setText("");
-            numE.setText("");
-            return; // Return if the captcha is incorrect
-        } else {
-            captchaE.setText("oyyyyyyy"); // Clear the captcha error message
-
-        }
 
         try {
             // Attempt to parse the text as an integer
             int num = Integer.parseInt(tf_num.getText());
         } catch (NumberFormatException e) {
             // If parsing fails (NumberFormatException is thrown), display an alert
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Num tel incorrect");
-            numE.setText("num" );
 
-            alert.setHeaderText(null);
-            alert.setContentText("Veuillez choisir un num exact !");
-            alert.showAndWait();
+
+
+
+            numE.setText("invalid number");
             captchaE.setText(""); // Clear the captcha error message
 
         }
+        if (!captcha.getText().equalsIgnoreCase(captchaText)) {
+            captchaE.setText("Incorrect CAPTCHA!");
+
+            tf_email.setText("");
+            return; // Return if the captcha is incorrect
+        } else {
+
+        }
+
         String emailPattern = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         Pattern pattern = Pattern.compile(emailPattern);
         Matcher matcher = pattern.matcher(tf_email.getText());
@@ -336,11 +337,7 @@ public class Interface {
                 }
                 System.out.println(tmpp.getTel());
             } else {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Information incorrect");
-                alert.setHeaderText(null);
-                alert.setContentText("email ou mot de passe incorrect !");
-                alert.showAndWait();
+       logE.setText("password incorrect ");
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -369,16 +366,19 @@ public class Interface {
             char randomChar = (char) (random.nextInt(26) + 'A'); // Generate random uppercase letters
             captcha.append(randomChar);
         }
-        String captchaText = captcha.toString();
+        captchaText = captcha.toString(); // Assign the generated CAPTCHA text to captchaText
         captchaC.setText(captchaText);
         System.out.println(captchaText);
     }
+
+
     // Method to generate CAPTCHA
     @FXML
     public void initialize() {
     }
 
     }
+
 
 
 
