@@ -87,6 +87,26 @@ public class UserService implements ICrud<User> {
         }
     }
 
+    public void modifierMdp(String email , String pw ) {
+        String requet = "UPDATE user SET password=? WHERE email =?";
+        try {
+            PreparedStatement st = cnx2.prepareStatement(requet);
+            System.out.println(email);
+            System.out.println(pw);
+            System.out.println(requet);
+            st.setString(1,pw );
+            st.setString(2, email);
+            int rowsAffected = st.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Modification réussie");
+            } else {
+                System.out.println("Aucune modification effectuée. Vérifiez l'ID.");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 
     @Override
     public void supprimerEntite(User p) {

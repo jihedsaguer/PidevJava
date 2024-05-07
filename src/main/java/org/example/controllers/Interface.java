@@ -121,9 +121,20 @@ public class Interface {
     @FXML
     void signup(ActionEvent event) {
         if (tf_ln.getText().isEmpty() || tf_fn.getText().isEmpty() || tf_num.getText().isEmpty() || tf_email.getText().isEmpty() || tf_pass.getText().isEmpty()) {
-           tousE.setText("remplir tous les champs svp" );
-            // Afficher un message d'alerte
+            tousE.setText("Remplir tous les champs, s'il vous plaît."); // Display an error message
+            return;
+        }
 
+        // Validate password strength
+        String password = tf_pass.getText();
+        String passwordErrorMessage = validatePassword(password);
+        if (passwordErrorMessage != null) {
+            // Display an error message if the password does not meet the requirements
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Mot de passe invalide");
+            alert.setHeaderText(null);
+            alert.setContentText(passwordErrorMessage);
+            alert.showAndWait();
             return;
         }
 
@@ -133,21 +144,15 @@ public class Interface {
             int num = Integer.parseInt(tf_num.getText());
         } catch (NumberFormatException e) {
             // If parsing fails (NumberFormatException is thrown), display an alert
-
-
-
-
-            numE.setText("invalid number");
+            numE.setText("Numéro invalide");
             captchaE.setText(""); // Clear the captcha error message
-
+            return;
         }
+
         if (!captcha.getText().equalsIgnoreCase(captchaText)) {
-            captchaE.setText("Incorrect CAPTCHA!");
-
+            captchaE.setText("CAPTCHA incorrect !");
             tf_email.setText("");
-            return; // Return if the captcha is incorrect
-        } else {
-
+            return; // Return if the CAPTCHA is incorrect
         }
 
         String emailPattern = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
@@ -159,16 +164,18 @@ public class Interface {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Mail incorrect");
             alert.setHeaderText(null);
-            alert.setContentText("Veuillez choisir un mail valide!");
+            alert.setContentText("Veuillez choisir un e-mail valide !");
             alert.showAndWait();
             return;
         }
+
         String ln = tf_ln.getText();
         String fn = tf_fn.getText();
         String mail = tf_email.getText();
         String pass = tf_pass.getText();
         int num = Integer.parseInt(tf_num.getText());
-        //    public User(String email, String roles, String password, String name, String prenom, int tel, int is_banned) {
+
+        // Create a new user if all validation passes
         User u = new User(mail, "[\"ROLE_USER\"]", pass, fn, ln, num, 0);
         us.ajouterEntite(u);
         tf_fn.clear();
@@ -177,8 +184,42 @@ public class Interface {
         tf_email.clear();
         tf_pass.clear();
         pn_signin.toFront();
-
     }
+
+    // Validate password strength
+    private String validatePassword(String password) {
+        // Define password requirements
+        int minLength = 8;
+        int minUpperCase = 1;
+        int minLowerCase = 1;
+        int minDigits = 1;
+        int minSpecialChars = 1;
+
+        // Check password length
+        if (password.length() < minLength) {
+            return "Le mot de passe doit contenir au moins " + minLength + " caractères.";
+        }
+
+        // Check for uppercase letters
+        if (password.chars().filter(Character::isUpperCase).count() < minUpperCase) {
+            return "Le mot de passe doit contenir au moins " + minUpperCase + " lettre(s) majuscule(s).";
+        }
+
+        // Check for lowercase letters
+        if (password.chars().filter(Character::isLowerCase).count() < minLowerCase) {
+            return "Le mot de passe doit contenir au moins " + minLowerCase + " lettre(s) minuscule(s).";
+        }
+
+        // Check for digits
+        if (password.chars().filter(Character::isDigit).count() < minDigits) {
+            return "Le mot de passe doit contenir au moins " + minDigits + " chiffre(s).";
+        }
+
+
+        // Password meets all requirements
+        return null;
+    }
+
 
     @FXML
     void delete(ActionEvent event) {
@@ -408,6 +449,7 @@ public class Interface {
                                 System.out.println("User logged in.");
                                 pn_home.toFront();
                                 pn_index.toFront();
+
                             }
                         }
                     } else {
@@ -477,7 +519,7 @@ public class Interface {
     public void initialize() {
     }
 
-    }
+}
 
 
 
