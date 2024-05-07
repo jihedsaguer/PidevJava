@@ -16,6 +16,7 @@ import org.example.service.UserService;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.Random;
 import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
@@ -204,7 +205,7 @@ public class Interface {
 
     @FXML
     void update(ActionEvent event) {
-        if (tf_ln1.getText().isEmpty() || tf_fn1.getText().isEmpty() || tf_num1.getText().isEmpty() || tf_email1.getText().isEmpty() || tf_pass1.getText().isEmpty()) {
+        if (tf_ln1.getText().isEmpty() || tf_fn1.getText().isEmpty() || tf_num1.getText().isEmpty() || tf_email1.getText().isEmpty() || tf_pass1.getText().isEmpty() || tf_num.getText().isEmpty() ) {
             // Afficher un message d'alerte
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Champs manquants");
@@ -295,58 +296,88 @@ public class Interface {
 
     @FXML
     void login(ActionEvent event) {
+        String email = tf_log.getText();
+        String password = tf_pw.getText();
 
-        ResultSet resultSet = us.log(tf_log.getText(), tf_pw.getText());
+        // First, verify email and password
+        ResultSet resultSet = us.log(email, password);
+
         try {
-
             if (resultSet.next()) {
-                tmpp = new User(
-                        resultSet.getInt("id"),
-                        resultSet.getString("email"),
-                        resultSet.getString("roles"),
-                        resultSet.getString("password"),
-                        resultSet.getString("name"),
-                        resultSet.getString("prenom"),
-                        resultSet.getInt("tel"),
-                        resultSet.getInt("is_banned")
-                );
-                id.setText(String.valueOf(tmpp.getId()));
-                tf_email1.setText(tmpp.getEmail());
-                tf_pass1.setText(tmpp.getPassword());
-                tf_fn1.setText(tmpp.getPrenom());
-                tf_ln1.setText(tmpp.getName());
-                if (tmpp.getIs_banned() == 1) {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("User banned");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Usr banned !");
-                    alert.showAndWait();
-                } else {
-                    if (tmpp.getRoles().equals("[\"ROLE_ADMIN\"]")) {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Dashboard.fxml"));
-                        Parent adminRoot = loader.load();
+                // User authenticated, generate and display verification code
+                String verificationCode = generateVerificationCode();
+                System.out.println("Verification code: " + verificationCode);
 
-                        Scene adminScene = new Scene(adminRoot);
-                        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                        window.setScene(adminScene);
-                        window.show();
+                // Show alert box to input verification code
+                TextInputDialog dialog = new TextInputDialog();
+                dialog.setTitle("Verification");
+                dialog.setHeaderText("Enter Verification Code");
+                dialog.setContentText("Please enter the verification code sent to your email:");
+
+                Optional<String> result = dialog.showAndWait();
+                if (result.isPresent() && result.get().equals(verificationCode)) {
+                    // Verification successful
+                    System.out.println("Verification successful.");
+
+                    tmpp = new User(
+                            resultSet.getInt("id"),
+                            resultSet.getString("email"),
+                            resultSet.getString("roles"),
+                            resultSet.getString("password"),
+                            resultSet.getString("name"),
+                            resultSet.getString("prenom"),
+                            resultSet.getInt("tel"),
+                            resultSet.getInt("is_banned")
+                    );
+
+                    if (tmpp.getIs_banned() == 1) {
+                        System.out.println("User is banned.");
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("User banned");
+                        alert.setHeaderText(null);
+                        alert.setContentText("User banned !");
+                        alert.showAndWait();
                     } else {
-                        pn_home.toFront();
-                        pn_index.toFront();
+                        if (tmpp.getRoles().equals("[\"ROLE_ADMIN\"]")) {
+                            System.out.println("Admin logged in.");
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Dashboard.fxml"));
+                            Parent adminRoot = loader.load();
+
+                            Scene adminScene = new Scene(adminRoot);
+                            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                            window.setScene(adminScene);
+                            window.show();
+                        } else {
+                            System.out.println("User logged in.");
+                            pn_home.toFront();
+                            pn_index.toFront();
+                        }
                     }
+                } else {
+                    // Verification failed
+                    System.out.println("Verification failed.");
+                    logE.setText("Verification failed.");
                 }
-                System.out.println(tmpp.getTel());
             } else {
-       logE.setText("password incorrect ");
+                System.out.println("Invalid credentials.");
+                logE.setText("Invalid credentials");
             }
         } catch (SQLException e) {
+            System.out.println("SQL error: " + e.getMessage());
             throw new RuntimeException(e);
         } catch (IOException e) {
+            System.out.println("IO error: " + e.getMessage());
             throw new RuntimeException(e);
         }
-
-
     }
+
+    private String generateVerificationCode() {
+        // Generate a random 6-digit verification code
+        Random random = new Random();
+        int code = 100000 + random.nextInt(900000);
+        return String.valueOf(code);
+    }
+
 
     @FXML
     void toHome(ActionEvent event) {
