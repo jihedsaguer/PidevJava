@@ -1,5 +1,9 @@
 package org.example.controllers;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,15 +11,22 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.example.entities.User;
 import org.example.service.UserService;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Base64;
 import java.util.Optional;
 import java.util.Random;
 import java.util.prefs.Preferences;
@@ -34,7 +45,8 @@ public class Interface {
     public TextField captcha;
     @FXML
     private Pagination pagination;
-
+    @FXML
+    private ImageView qrcode;
     @FXML
     private Label id;
     @FXML
@@ -292,8 +304,36 @@ public class Interface {
         forgetPwdStage.showAndWait();
 
     }
+    @FXML
+    protected String generateQRCode(String verificationCode) {
+        try {
+            // Create a QRCode writer
+            QRCodeWriter qrCodeWriter = new QRCodeWriter();
 
+            // Encode the verification code into a BitMatrix
+            BitMatrix bitMatrix = qrCodeWriter.encode(verificationCode, BarcodeFormat.QR_CODE, 200, 200);
 
+            // Convert the BitMatrix to a BufferedImage
+            BufferedImage bufferedImage = new BufferedImage(bitMatrix.getWidth(), bitMatrix.getHeight(), BufferedImage.TYPE_INT_RGB);
+            for (int x = 0; x < bitMatrix.getWidth(); x++) {
+                for (int y = 0; y < bitMatrix.getHeight(); y++) {
+                    bufferedImage.setRGB(x, y, bitMatrix.get(x, y) ? 0xFF000000 : 0xFFFFFFFF); // Set black or white based on bit value
+                }
+            }
+            // Convert the BufferedImage to a byte array
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            ImageIO.write(bufferedImage, "png", byteArrayOutputStream);
+
+            // Convert the byte array to a Base64 encoded string
+            byte[] bytes = byteArrayOutputStream.toByteArray();
+
+            // Return the Base64 encoded string
+            return Base64.getEncoder().encodeToString(bytes);
+        } catch (WriterException | IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     @FXML
     void login(ActionEvent event) {
         String email = tf_log.getText();
@@ -304,59 +344,84 @@ public class Interface {
 
         try {
             if (resultSet.next()) {
-                // User authenticated, generate and display verification code
+                // User authenticated, generate verification code and QR code
                 String verificationCode = generateVerificationCode();
+                String qrCodeBase64 = generateQRCode(verificationCode);
                 System.out.println("Verification code: " + verificationCode);
 
-                // Show alert box to input verification code
-                TextInputDialog dialog = new TextInputDialog();
-                dialog.setTitle("Verification");
-                dialog.setHeaderText("Enter Verification Code");
-                dialog.setContentText("Please enter the verification code sent to your email:");
+                // Show alert box with QR code image
+                Alert qrCodeAlert = new Alert(Alert.AlertType.INFORMATION);
+                qrCodeAlert.setTitle("QR Code Verification");
+                qrCodeAlert.setHeaderText("Scan the QR code to verify your login.");
 
-                Optional<String> result = dialog.showAndWait();
-                if (result.isPresent() && result.get().equals(verificationCode)) {
-                    // Verification successful
-                    System.out.println("Verification successful.");
+                // Add QR code image to the alert content
+                ImageView qrCodeImageView = new ImageView();
+                qrCodeImageView.setImage(new Image(new ByteArrayInputStream(Base64.getDecoder().decode(qrCodeBase64))));
+                qrCodeImageView.setFitWidth(200); // Set width of the image
+                qrCodeImageView.setFitHeight(200); // Set height of the image
+                qrCodeAlert.getDialogPane().setGraphic(qrCodeImageView);
 
-                    tmpp = new User(
-                            resultSet.getInt("id"),
-                            resultSet.getString("email"),
-                            resultSet.getString("roles"),
-                            resultSet.getString("password"),
-                            resultSet.getString("name"),
-                            resultSet.getString("prenom"),
-                            resultSet.getInt("tel"),
-                            resultSet.getInt("is_banned")
-                    );
+                // Add input field for verification code
+                TextField verificationCodeInput = new TextField();
+                verificationCodeInput.setPromptText("Enter Verification Code");
+                qrCodeAlert.getDialogPane().setContent(verificationCodeInput);
 
-                    if (tmpp.getIs_banned() == 1) {
-                        System.out.println("User is banned.");
-                        Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setTitle("User banned");
-                        alert.setHeaderText(null);
-                        alert.setContentText("User banned !");
-                        alert.showAndWait();
-                    } else {
-                        if (tmpp.getRoles().equals("[\"ROLE_ADMIN\"]")) {
-                            System.out.println("Admin logged in.");
-                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Dashboard.fxml"));
-                            Parent adminRoot = loader.load();
+                // Show the alert and wait for user response
+                Optional<ButtonType> result = qrCodeAlert.showAndWait();
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    // User clicked OK, check verification code
+                    String enteredCode = verificationCodeInput.getText();
+                    if (enteredCode.equals(verificationCode)) {
+                        // Verification code matches, proceed with login
+                        System.out.println("Verification successful.");
 
-                            Scene adminScene = new Scene(adminRoot);
-                            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                            window.setScene(adminScene);
-                            window.show();
+                        // Proceed with user authentication
+                        tmpp = new User(
+                                resultSet.getInt("id"),
+                                resultSet.getString("email"),
+                                resultSet.getString("roles"),
+                                resultSet.getString("password"),
+                                resultSet.getString("name"),
+                                resultSet.getString("prenom"),
+                                resultSet.getInt("tel"),
+                                resultSet.getInt("is_banned")
+                        );
+
+                        if (tmpp.getIs_banned() == 1) {
+                            System.out.println("User is banned.");
+                            Alert alert = new Alert(Alert.AlertType.WARNING);
+                            alert.setTitle("User banned");
+                            alert.setHeaderText(null);
+                            alert.setContentText("User banned !");
+                            alert.showAndWait();
                         } else {
-                            System.out.println("User logged in.");
-                            pn_home.toFront();
-                            pn_index.toFront();
+                            if (tmpp.getRoles().equals("[\"ROLE_ADMIN\"]")) {
+                                System.out.println("Admin logged in.");
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Dashboard.fxml"));
+                                Parent adminRoot = loader.load();
+
+                                Scene adminScene = new Scene(adminRoot);
+                                Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                                window.setScene(adminScene);
+                                window.show();
+                            } else {
+                                System.out.println("User logged in.");
+                                pn_home.toFront();
+                                pn_index.toFront();
+                            }
                         }
+                    } else {
+                        // Verification code doesn't match, show error message
+                        System.out.println("Incorrect verification code.");
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Incorrect Verification Code");
+                        alert.setHeaderText(null);
+                        alert.setContentText("The entered verification code is incorrect. Please try again.");
+                        alert.showAndWait();
                     }
                 } else {
-                    // Verification failed
-                    System.out.println("Verification failed.");
-                    logE.setText("Verification failed.");
+                    // User closed the alert without verifying QR code
+                    System.out.println("QR Code verification canceled.");
                 }
             } else {
                 System.out.println("Invalid credentials.");
@@ -370,6 +435,8 @@ public class Interface {
             throw new RuntimeException(e);
         }
     }
+
+
 
     private String generateVerificationCode() {
         // Generate a random 6-digit verification code
@@ -401,6 +468,8 @@ public class Interface {
         captchaC.setText(captchaText);
         System.out.println(captchaText);
     }
+
+
 
 
     // Method to generate CAPTCHA
