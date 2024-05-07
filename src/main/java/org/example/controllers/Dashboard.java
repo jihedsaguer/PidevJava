@@ -14,6 +14,7 @@ import org.example.service.EventService;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Connection;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
@@ -21,7 +22,63 @@ import java.util.logging.Logger;
 import org.example.entities.Event;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.chart.PieChart;
+import org.example.tools.DBconnexion;
+
 public class Dashboard {
+    @FXML
+    private PieChart pieChart;
+
+
+    @FXML
+    private AnchorPane rootPane;
+
+
+    @FXML
+    void tocreateevent(ActionEvent event) {
+        pn_addevent.toFront();
+        initialize(); // Appel de la méthode initialize() après le changement de vue
+    }
+
+    @FXML
+    void toeventlist(ActionEvent event) {
+        pn_eventlist.toFront();
+        initialize(); // Appel de la méthode initialize() après le changement de vue
+    }
+
+
+
+
+    @FXML
+    void handleStatisticsGeneration(ActionEvent event) {
+        try {
+            // 1. Récupérer les données des événements et des participations depuis la base de données
+            // Par exemple, vous pouvez utiliser des requêtes SQL pour obtenir ces données
+            Connection connection = DBconnexion.getInstance().getCnx();
+            String query = "SELECT e.nom AS event_nom, COUNT(p.event_id) AS nb_participants " +
+                    "FROM event e LEFT JOIN participation p ON e.id = p.event_id " +
+                    "GROUP BY e.nom";
+            ResultSet resultSet = connection.createStatement().executeQuery(query);
+
+            // 2. Calculer le nombre de participations pour chaque événement
+            ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+            while (resultSet.next()) {
+                String eventName = resultSet.getString("event_nom");
+                int participantsCount = resultSet.getInt("nb_participants");
+                // 3. Créer une liste d'objets PieChart.Data
+                pieChartData.add(new PieChart.Data(eventName, participantsCount));
+            }
+            // Modifier la position du PieChart
+            pieChart.setLayoutX(-70); // Remplacez nouvelleValeurX par la valeur x désirée
+            pieChart.setLayoutY(210); // Remplacez nouvelleValeurY par la valeur y désirée
+
+            // 4. Ajouter les données au PieChart pour les afficher
+            pieChart.setData(pieChartData);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @FXML
     private GridPane grid;
@@ -107,15 +164,7 @@ public class Dashboard {
         displayg();
     }
 
-    @FXML
-    void tocreateevent(ActionEvent event) {
-        pn_addevent.toFront();
-    }
 
-    @FXML
-    void toeventlist(ActionEvent event) {
-        pn_eventlist.toFront();
-    }
 
     private void displayg() {
         ///////////////////////////////////////////////////////////////
