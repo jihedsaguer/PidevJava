@@ -43,6 +43,7 @@ public class Interface {
     public TextField captchaE;
     @FXML
     public TextField captcha;
+    public Button updateButton;
     @FXML
     private Pagination pagination;
     @FXML
@@ -302,6 +303,8 @@ public class Interface {
         String mail = tf_email1.getText();
         String pass = tf_pass1.getText();
         int num = Integer.parseInt(tf_num1.getText());
+
+
         //    public User(String email, String roles, String password, String name, String prenom, int tel, int is_banned) {
         User u = new User(Integer.parseInt(id.getText()), mail, "[\"ROLE_USER\"]", pass, fn, ln, num, 0);
         us.modifierEntite(u);
@@ -382,7 +385,7 @@ public class Interface {
 
         // First, verify email and password
         ResultSet resultSet = us.log(email, password);
-
+        System.out.println(resultSet);
         try {
             if (resultSet.next()) {
                 // User authenticated, generate verification code and QR code
@@ -427,6 +430,12 @@ public class Interface {
                                 resultSet.getInt("tel"),
                                 resultSet.getInt("is_banned")
                         );
+
+                        tf_fn1.setText(tmpp.getName());
+                        tf_ln1.setText(tmpp.getPrenom());
+                        tf_num1.setText(String.valueOf(tmpp.getTel()));
+                        tf_email1.setText(tmpp.getEmail());
+                        tf_pass1.setText(tmpp.getPassword());
 
                         if (tmpp.getIs_banned() == 1) {
                             System.out.println("User is banned.");
