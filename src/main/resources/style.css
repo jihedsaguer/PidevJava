@@ -1,6 +1,55 @@
+/* Apply Bootstrap classes to improve the appearance */
 .root {
     /* Set background image */
     -fx-background-image: url("bg.png");
     /* Scale background image to cover the entire window */
     -fx-background-size: cover;
+    /* Apply Bootstrap classes */
+    -fx-padding: 20px;
+    -fx-alignment: center;
+}
+#pn_signup {
+    -fx-background-color: #f4a460; /* Light brown */
+}
+.text-field
+{
+    -fx-background-color: transparent;
+    -fx-border-radius: 10px ;
+    -fx-border-color:  black;
+    -fx-text-fill: #333;
+    -fx-font-size: 18pt; /* Font size */
+}
+#captcha, #captchaE, #captchaC {
+    -fx-font-size: 16px;
+    -fx-border-radius: 10px;
+    -fx-text-fill: white; /* White text color */
+}
+/* Style button */
+.button {
+    -fx-background-color: #007bff; /* Blue color */
+    -fx-border-radius: 8px;
+}
+
+/* Add hover effect on button */
+.button:hover {
+    -fx-background-color: #0056b3; /* Darker blue color on hover */
+}
+#tousE {
+    -fx-text-fill: red; /* Red text color */
+}
+#logE
+{    -fx-text-fill: red; /* Red text color */
+}
+.Label
+{
+    -fx-text-fill: red;
+}
+#pn_signup
+{
+    -fx-background-image: url('360_F_210459536_XmLDEcKq2DpeNLVmheuWeu9NM9aGKnih.jpg');
+    -fx-background-size: cover;
+}
+#texte
+{
+    -fx-text-fill: black;
 }
