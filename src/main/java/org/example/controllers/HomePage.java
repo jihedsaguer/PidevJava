@@ -19,7 +19,7 @@ public class HomePage extends Application {
     public void start(Stage primaryStage) {
         Application.setUserAgentStylesheet(new NordDark().getUserAgentStylesheet());
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/interface.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/Interface.fxml"));
             primaryStage.setTitle("User");
             primaryStage.setScene(new Scene(root));
             primaryStage.show();

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.control.Button?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.controllers.SideBarAdminController">
+
+    <!-- VBox pour le menu à gauche -->
+    <VBox fx:id="menuVBox" prefWidth="150" AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0">
+        <Button text="Dashboard" onAction="#afficherOption1"/>
+        <Button text="Evennement" onAction="#afficherOption2"/>
+        <!-- Ajoutez d'autres boutons pour d'autres options du menu -->
+    </VBox>
+
+    <!-- Pane pour le contenu à droite -->
+    <Pane fx:id="contenuPane" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="150">
+        <!-- Le contenu sera chargé dynamiquement ici -->
+    </Pane>
+
+</AnchorPane>
