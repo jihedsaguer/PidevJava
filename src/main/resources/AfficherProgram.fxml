@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="700.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.esprit.controllers.AfficherProgram">
+   <children>
+      <ImageView fitHeight="700.0" fitWidth="1100.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../Users/Moham/Downloads/Capture%20d'écran%202024-05-10%20004439.png" />
+         </image>
+      </ImageView>
+      <VBox layoutX="29.0" layoutY="58.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+         <children>
+            <HBox prefHeight="34.0" prefWidth="769.0" style="-fx-background-color: #D3D3D3;">
+               <children>
+                  <Label fx:id="receiverNameLabel211111" prefHeight="27.0" prefWidth="182.0" style="-fx-text-fill: #000000; -fx-font-weight: bold; -fx-font-size: 16;" text="Coach name" />
+                  <Label fx:id="receiverNameLabel2111111" prefHeight="27.0" prefWidth="204.0" style="-fx-text-fill: #000000; -fx-font-weight: bold; -fx-font-size: 16;" text="type program" />
+                  <Label fx:id="receiverNameLabel2111112" prefHeight="27.0" prefWidth="180.0" style="-fx-text-fill: #000000; -fx-font-weight: bold; -fx-font-size: 16;" text="durree" />
+                  <Label fx:id="receiverNameLabel2111113" prefHeight="27.0" prefWidth="182.0" style="-fx-text-fill: #000000; -fx-font-weight: bold; -fx-font-size: 16;" text="start date" />
+                  <Label fx:id="receiverNameLabel21111131" prefHeight="27.0" prefWidth="157.0" style="-fx-text-fill: #000000; -fx-font-weight: bold; -fx-font-size: 16;" text="Actions" />
+               </children>
+            </HBox>
+            <ScrollPane fx:id="scroll" opacity="0.8" prefHeight="574.0" prefWidth="1037.0" styleClass="transparent">
+               <content>
+                  <GridPane fx:id="grid" prefHeight="0.0" prefWidth="0.0">
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                     </rowConstraints>
+                  </GridPane>
+               </content>
+            </ScrollPane>
+         </children>
+      </VBox>
+      <Button layoutX="469.0" layoutY="14.0" mnemonicParsing="false" onAction="#pdf" text="PDF" />
+      <Button layoutX="551.0" layoutY="14.0" mnemonicParsing="false" onAction="#stat" text="STAT" />
+      <Button layoutX="29.0" layoutY="14.0" mnemonicParsing="false" onAction="#gotoajouter" text="Ajouter programme" />
+      <Button layoutX="952.0" layoutY="14.0" mnemonicParsing="false" onAction="#gotocoach" text="Gestion coach" />
+   </children>
+</AnchorPane>
